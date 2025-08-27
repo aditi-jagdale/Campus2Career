@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% block title %}Profile - Campus2Career{% endblock %}
+
+{% block content %}
+<div class="profile-page">
+    <h1>My Profile</h1>
+    <div class="profile-actions">
+        <a href="{{ url_for('logout') }}" class="profile-btn logout-btn">Logout</a>
+    </div>
+
+    <!-- ===== Profile Update Form ===== -->
+    <form action="{{ url_for('update_profile') }}" method="POST" enctype="multipart/form-data">
+        
+        <!-- ===== 1. Basic Info ===== -->
+        <section class="profile-section">
+            <h2>Basic Info</h2>
+            <div class="form-group">
+                <label for="full_name">Full Name</label>
+                <input type="text" id="full_name" name="full_name" value="{{ user.name|default('') }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email (Verified)</label>
+                <input type="email" id="email" value="{{ user.email }}" readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="college">College/University</label>
+                <input type="text" id="college" name="college" value="{{ user.college|default('') }}">
+            </div>
+
+            <div class="form-group">
+                <label for="graduation_year">Graduation Year</label>
+                <input type="number" id="graduation_year" name="graduation_year"
+                    value="{{ user.graduation_year|default('') }}">
+            </div>
+
+            <div class="form-group">
+                <label for="links">LinkedIn / GitHub / Portfolio</label>
+                <input type="text" id="links" name="links" value="{{ user.links|default('') }}"
+                    placeholder="Separate by commas">
+            </div>
+        </section>
+
+        <!-- ===== 2. Career Interests ===== -->
+        <section class="profile-section">
+            <h2>Career Interests</h2>
+            <div class="form-group">
+                <label for="domains">Preferred Domains</label>
+                <input type="text" id="domains" name="domains" value="{{ user.domains|default('') }}"
+                    placeholder="e.g., Full Stack, AI/ML">
+            </div>
+
+            <div class="form-group">
+                <label for="internship_type">Internship Type</label>
+                <select id="internship_type" name="internship_type">
+                    <option value="Remote" {% if user.internship_type=='Remote' %}selected{% endif %}>Remote</option>
+                    <option value="Hybrid" {% if user.internship_type=='Hybrid' %}selected{% endif %}>Hybrid</option>
+                    <option value="On-site" {% if user.internship_type=='On-site' %}selected{% endif %}>On-site</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- ===== 3. Skills & Tools ===== -->
+        <section class="profile-section">
+            <h2>Skills & Tools</h2>
+            <div class="form-group">
+                <label for="skills">Skills</label>
+                <input type="text" id="skills" name="skills" value="{{ user.skills|default('') }}"
+                    placeholder="e.g., Flask, Python, Figma">
+            </div>
+
+            <div class="form-group">
+                <label for="proficiency">Proficiency Level</label>
+                <select id="proficiency" name="proficiency">
+                    <option value="Beginner" {% if user.proficiency=='Beginner' %}selected{% endif %}>Beginner</option>
+                    <option value="Intermediate" {% if user.proficiency=='Intermediate' %}selected{% endif %}>Intermediate</option>
+                    <option value="Advanced" {% if user.proficiency=='Advanced' %}selected{% endif %}>Advanced</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- ===== 4. Projects ===== -->
+        <section class="profile-section">
+            <h2>Projects</h2>
+            <div class="form-group">
+                <label for="projects">Projects / Achievements</label>
+                <textarea id="projects" name="projects"
+                    placeholder="Title, description, tech stack, links...">{{ user.projects|default('') }}</textarea>
+            </div>
+        </section>
+
+        <!-- ===== 5. Resume Upload ===== -->
+        <section class="profile-section">
+            <h2>Resume Upload (Optional)</h2>
+            <div class="form-group">
+                <input type="file" name="resume" accept="application/pdf">
+                {% if user.resume %}
+                <p>Current Resume: 
+                    <a href="{{ url_for('static', filename='resumes/' + user.resume) }}" target="_blank">View</a>
+                </p>
+                {% endif %}
+            </div>
+        </section>
+
+        <!-- ===== 6. Personal Statement ===== -->
+        <section class="profile-section">
+            <h2>Personal Statement</h2>
+            <div class="form-group">
+                <textarea name="personal_statement"
+                    placeholder="Why I’m here / What I’m passionate about">{{ user.personal_statement|default('') }}</textarea>
+            </div>
+        </section>
+
+        <div class="form-submit">
+            <button type="submit" class="auth-btn">Update Profile</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

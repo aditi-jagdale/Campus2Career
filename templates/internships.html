@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Explore Internships | Campus2Career{% endblock %}
+
+{% block content %}
+<div class="internships-container">
+    <h2 class="internships-heading">🚀 Explore Top Internships</h2>
+
+    <form method="get" class="internship-filters">
+        <select name="domain">
+            <option value="">All Domains</option>
+            {% for domain in [
+            "AI/ML", "Web Development", "Cybersecurity", "Cloud & DevOps", "UI/UX Design", "Full Stack",
+            "Generative AI", "Data Science & Analytics", "Product Management", "AR/VR Development",
+            "Blockchain", "Game Development", "Mobile App Development", "EdTech & Learning Design",
+            "Prompt Engineering", "DevRel & Community Building", "Digital Marketing",
+            "Content Creation & SEO", "Business Analytics", "Finance & FinTech", "LegalTech"
+            ] %}
+            <option value="{{ domain }}">{{ domain }}</option>
+            {% endfor %}
+        </select>
+
+        <select name="company">
+            <option value="">All Companies</option>
+            {% for company in [
+            "Microsoft", "Google", "Amazon", "Meta", "Oracle", "TCS", "Infosys", "Cisco", "Eduskills",
+            "IBM", "Accenture", "Wipro", "Salesforce", "Adobe", "Zoho", "Deloitte", "Flipkart", "HCL",
+            "SAP", "Capgemini"
+            ] %}
+            <option value="{{ company }}">{{ company }}</option>
+            {% endfor %}
+        </select>
+
+        <select name="type">
+            <option value="">All Types</option>
+            {% for type in ["Remote", "Hybrid", "In-office"] %}
+            <option value="{{ type }}">{{ type }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Filter</button>
+    </form>
+
+    <div class="internship-grid">
+        {% for internship in internships %}
+        <div class="internship-card {% if internship.featured %}featured{% endif %}">
+            <div class="card-top">
+                
+                <h3>{{ internship.title }}</h3>
+                <span class="type-badge">{{ internship.type }}</span>
+                {% if internship.featured %}
+                <span class="featured-badge">⭐ Featured</span>
+                {% endif %}
+            </div>
+            <p><strong>Company:</strong> {{ internship.company }}</p>
+            <p><strong>Domain:</strong> {{ internship.domain }}</p>
+            <p><strong>Duration:</strong> {{ internship.duration }}</p>
+            <div class="skills">
+                {% for skill in internship.skills %}
+                <span class="skill-tag">{{ skill }}</span>
+                {% endfor %}
+            </div>
+            <a href="{{ internship.link }}" target="_blank" class="apply-button">Apply Now</a>
+        </div>
+        {% endfor %}
+        {% if not internships %}
+        <p class="no-results">No internships found. Try different filters!</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

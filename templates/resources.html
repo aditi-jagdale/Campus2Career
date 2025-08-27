@@ -1,0 +1,326 @@
+{% extends "base.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Campus2Career | Resources</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    background-color: #f8fafc;
+    color: #1e293b;
+}
+
+/* Sticky Navbar */
+.navbar {
+    position: sticky;
+    top: 0;
+    background-color: #f7f7f8;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 3rem;
+    flex-wrap: wrap;
+    z-index: 1000;
+}
+.nav-links { display: flex; gap: 25px; flex-wrap: wrap; }
+.nav-links a { color: #1d4ed8; text-decoration: none; font-weight: 600; font-size: 1rem; }
+.nav-links a:hover { text-decoration: underline; }
+.nav-auth { display: flex; gap: 15px; }
+.nav-auth a {
+    padding: 8px 20px;
+    background-color: #1d4ed8;
+    color: white;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+}
+.nav-auth a:hover { background-color: #2563eb; }
+
+/* Header */
+header {
+    background-color: #f5f6f7;
+    color: #1d4ed8;
+    text-align: center;
+    padding: 3rem 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+header h1 { font-size: 3rem; margin-bottom: 0.5rem; }
+header p { font-size: 1.2rem; font-weight: 500; }
+
+/* Section styling */
+section {
+    max-width: 1200px;
+    margin: 3rem auto;
+    padding: 0 2rem;
+}
+h2 { color: #1d4ed8; font-size: 2rem; margin-bottom: 1.5rem; font-weight: 600; }
+
+/* Card layout: 2 columns desktop, 1 column mobile */
+/* Card layout: full width for laptops and mobile */
+/* Card layout: full-width cards centered */
+.card-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* center horizontally */
+    gap: 1.5rem;
+}
+.card {
+    width: 100%;
+    max-width: 1200px;
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    text-align: left; /* left-aligned text */
+}
+.card {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+.card h3 { color: #1d4ed8; font-size: 1.4rem; margin-bottom: 0.8rem; font-weight: 600; }
+.example {
+    background: #e0e7ff;
+    border-left: 4px solid #1d4ed8;
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius: 6px;
+    font-size: 0.95rem;
+}
+ul { padding-left: 1.2rem; margin-top: 0.5rem; }
+ul li { margin-bottom: 0.6rem; }
+a { color: #1d4ed8; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Footer */
+footer {
+    background: #1d4ed8;
+    color: white;
+    text-align: center;
+    padding: 3rem 2rem;
+    margin-top: 3rem;
+}
+footer h2 { margin-bottom: 0.5rem; font-size: 1.8rem; }
+footer p { margin: 0.3rem 0; font-size: 1rem; }
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .navbar { flex-direction: column; gap: 10px; }
+    .nav-links, .nav-auth { flex-direction: column; width: 100%; align-items: center; }
+    .nav-auth a { width: 80%; text-align: center; }
+    header h1 { font-size: 2rem; }
+    header p { font-size: 1rem; }
+    section { padding: 0 1rem; }
+    .card-container { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>Resources</h1>
+    <p>Your Personal Toolkit for Career Success</p>
+</header>
+
+<nav class="navbar">
+    <div class="nav-links">
+        <a href="#career-tools">Career Tools</a>
+        <a href="#learning">Upskilling</a>
+        <a href="#job-help">Job Help</a>
+        <a href="#wellness">Wellness</a>
+        <a href="#community">Community</a>
+        <a href="#quick-tools">Quick Tools</a>
+    </div>
+
+</nav>
+
+<section id="career-tools">
+    <h2>🔧 Career Tools</h2>
+    <div class="card-container">
+        <div class="card">
+            <h3>📄 Resume Templates & Writing Tips</h3>
+            <ul>
+                <li>Downloadable, ATS-friendly templates (Word, Google Docs, Canva)</li>
+                <li>Industry-specific formats: Tech, Marketing, Design, Business</li>
+                <li>Tips on layout, keywords, and project highlights</li>
+            </ul>
+            <div class="example">
+                <strong>Example:</strong><br>
+                Priya Sharma – B.Tech Computer Science<br>
+                Projects: E-commerce Website (React + Node.js), Chat App (Python + Flask)<br>
+                Skills: JavaScript, Python, SQL, Git
+            </div>
+        </div>
+        <div class="card">
+            <h3>✉️ Cover Letter Builder</h3>
+            <ul>
+                <li>Editable templates with fill-in-the-blank structure</li>
+                <li>Examples for different industries and roles</li>
+                <li>Tips for tone, personalization, and structure</li>
+            </ul>
+            <div class="example">
+                “I’m excited to apply for the Marketing Intern role at ABC Corp. As a BBA student, I led a campaign that
+                increased engagement by 40%. I’m eager to bring my creativity and analytics skills to your team.”
+            </div>
+        </div>
+        <div class="card">
+            <h3>🎤 Interview Question Bank</h3>
+            <ul>
+                <li>50+ common questions with sample STAR answers</li>
+                <li>Behavioral, technical, and HR interview prep</li>
+                <li>Mock interview checklist</li>
+            </ul>
+            <div class="example">
+                Q: Tell me about a time you solved a problem.<br>
+                A: “In my final year project, our team lost data due to a crash. I initiated a recovery plan and
+                restored 80% of the files—allowing us to meet our deadline.”
+            </div>
+        </div>
+        <div class="card">
+            <h3>📊 Job Application Tracker</h3>
+            <ul>
+                <li>Downloadable in Notion, Excel, and Google Sheets</li>
+                <li>Track applications, deadlines, and follow-ups</li>
+                <li>Color-coded status updates</li>
+            </ul>
+            <div class="example">
+                Infosys – Software Intern – Applied Aug 10 – Interviewing – Follow-up Aug 20
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="learning">
+    <h2>📚 Learning & Upskilling</h2>
+    <div class="card-container">
+        <div class="card">
+            <h3>🎓 Free Courses & Certifications</h3>
+            <ul>
+                <li>Google IT Support (Coursera)</li>
+                <li>Excel for Business (edX)</li>
+                <li>Communication Foundations (LinkedIn Learning)</li>
+            </ul>
+        </div>
+        <div class="card">
+            <h3>🧩 Skill Maps by Career Path</h3>
+            <ul>
+                <li>Data Analyst → Excel, SQL, Python, Tableau</li>
+                <li>UX Designer → Figma, User Research, Wireframing</li>
+                <li>Digital Marketer → SEO, Google Ads, Analytics</li>
+            </ul>
+        </div>
+        <div class="card">
+            <h3>💬 Soft Skills Toolkit</h3>
+            <ul>
+                <li>Communication exercises</li>
+                <li>Leadership development guides</li>
+                <li>Time management templates</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section id="job-help">
+    <h2>💼 Job & Internship Help</h2>
+    <div class="card-container">
+        <div class="card">
+            <h3>🔍 Internship & Job Boards</h3>
+            <ul>
+                <li><a href="https://internshala.com" target="_blank">Internshala</a></li>
+                <li><a href="https://angel.co" target="_blank">AngelList</a></li>
+                <li><a href="https://linkedin.com/jobs" target="_blank">LinkedIn Jobs</a></li>
+                <li><a href="https://naukri.com" target="_blank">Naukri</a></li>
+            </ul>
+        </div>
+        <div class="card">
+            <h3>📬 Email Templates</h3>
+            <ul>
+                <li>Cold outreach</li>
+                <li>Follow-ups</li>
+                <li>Thank-you notes</li>
+            </ul>
+        </div>
+        <div class="card">
+            <h3>🌐 Portfolio Building Guide</h3>
+            <ul>
+                <li>Use Notion, Wix, or GitHub Pages</li>
+                <li>Include About Me, Projects, Resume, Contact</li>
+                <li>Highlight 2–3 key projects with visuals</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section id="wellness">
+    <h2>🧠 Mindset & Wellness</h2>
+    <div class="card-container">
+        <div class="card">
+            <h3>🧘 Mental Health Resources</h3>
+            <ul>
+                <li>Helplines: iCall (+91 9152987821), AASRA (+91 9820466726)</li>
+                <li>Apps: Headspace, Calm, Insight Timer</li>
+                <li>Guides: Stress management, journaling prompts, breathing exercises</li>
+            </ul>
+        </div>
+        <div class="card">
+            <h3>⏳ Time Management Hacks</h3>
+            <ul>
+                <li>Pomodoro method (25-min focus + 5-min break)</li>
+                <li>Time-blocking templates for weekly planning</li>
+                <li>Habit trackers to build consistency</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section id="community">
+    <h2>🌐 Community & Events</h2>
+    <div class="card-container">
+        <div class="card">
+            <h3>📅 Upcoming Webinars & Workshops</h3>
+            <ul>
+                <li>Resume Review Bootcamp – Sept 5</li>
+                <li>LinkedIn Makeover – Sept 12</li>
+                <li>AMA with HR Professionals – Sept 20</li>
+            </ul>
+        </div>
+        <div class="card">
+            <h3>🤝 Mentorship Program</h3>
+            <ul>
+                <li>Get matched with a mentor in your field</li>
+                <li>Monthly 1:1 calls, resume reviews, career guidance</li>
+                <li>Apply via our mentorship form (coming soon)</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section id="quick-tools">
+    <h2>⚡ Quick Access Tools</h2>
+    <div class="card-container">
+        <div class="card">
+            <h3>✅ Resume Checker</h3>
+            <p>Upload your resume and get instant feedback on formatting, keywords, and clarity.</p>
+        </div>
+        <div class="card">
+            <h3>🎤 Interview Question Generator</h3>
+            <p>Practice random questions from our curated bank to sharpen your responses.</p>
+        </div>
+        <div class="card">
+            <h3>🧭 Career Quiz</h3>
+            <p>Discover roles that match your interests and strengths. Great for students unsure of their path.</p>
+        </div>
+    </div>
+</section>
+
+
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus2Career</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        #internships-section {
+            scroll-margin-top: 80px;
+        }
+
+        .section-heading {
+            text-align: center;
+            font-size: 28px;
+            margin: 40px 0 20px;
+            color: #1e3089;
+            font-weight: 600;
+        }
+
+        .internship-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 0 20px 40px;
+        }
+
+        .internship-card {
+            background: #f5f9ff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .internship-card:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ===== Navbar ===== -->
+    <nav class="navbar">
+        <div class="logo">
+            <a href="{{ url_for('home') }}" class="logo">🎓 Campus2Career</a>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="{{ url_for('internships') }}">Internships</a></li>
+            <li><a href="{{ url_for('aboutus') }}">About Us</a></li>
+            <li><a href="{{ url_for('resources') }}">Resources</a></li>
+        </ul>
+
+
+        <!-- ===== Auth Section ===== -->
+        <div class="nav-auth">
+            {% if not user %}
+            <a href="{{ url_for('login') }}" class="login-btn">Login</a>
+            <a href="{{ url_for('register') }}" class="register-btn">Register</a>
+            {% else %}
+            <a href="{{ url_for('profile') }}" class="profile-btn">{{ user.name }}</a>
+            <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <!-- ===== Hero Section ===== -->
+    <section class="hero">
+        <h1>Find Your Dream Internship 🚀</h1>
+        <p>Smarter search. Better Internships. Brighter future.</p>
+        <div class="hero-buttons">
+            <a href="#internships-section" class="browse-btn">Browse Internships</a>
+        </div>
+    </section>
+
+    <!-- ===== Internships Section ===== -->
+    <section id="internships-section" class="internships">
+        <div class="internship-cards">
+            {% for internship in internships %}
+            <div class="internship-card">
+                <h3>{{ internship.title }}</h3>
+                <p><strong>Company:</strong> {{ internship.company }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- ===== Footer ===== -->
+    <footer class="footer">
+        <p>© 2025 Campus2Career. All rights reserved.</p>
+        <ul class="footer-links">
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </footer>
+</body>
+
+</html>
