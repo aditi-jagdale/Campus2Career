@@ -6,6 +6,7 @@
 <div class="internships-container">
     <h2 class="internships-heading">🚀 Explore Top Internships</h2>
 
+    <!-- ===== Filters ===== -->
     <form method="get" class="internship-filters">
         <select name="domain">
             <option value="">All Domains</option>
@@ -41,31 +42,208 @@
         <button type="submit">Filter</button>
     </form>
 
+    <!-- ===== Internship Cards ===== -->
     <div class="internship-grid">
         {% for internship in internships %}
         <div class="internship-card {% if internship.featured %}featured{% endif %}">
             <div class="card-top">
-                
                 <h3>{{ internship.title }}</h3>
-                <span class="type-badge">{{ internship.type }}</span>
-                {% if internship.featured %}
-                <span class="featured-badge">⭐ Featured</span>
-                {% endif %}
+                <div class="badges">
+                    <span class="type-badge">{{ internship.type }}</span>
+                    {% if internship.featured %}
+                    <span class="featured-badge">⭐ Featured</span>
+                    {% endif %}
+                </div>
             </div>
             <p><strong>Company:</strong> {{ internship.company }}</p>
             <p><strong>Domain:</strong> {{ internship.domain }}</p>
             <p><strong>Duration:</strong> {{ internship.duration }}</p>
+
+            {% if internship.skills %}
             <div class="skills">
                 {% for skill in internship.skills %}
                 <span class="skill-tag">{{ skill }}</span>
                 {% endfor %}
             </div>
+            {% endif %}
+
             <a href="{{ internship.link }}" target="_blank" class="apply-button">Apply Now</a>
         </div>
         {% endfor %}
+
         {% if not internships %}
         <p class="no-results">No internships found. Try different filters!</p>
         {% endif %}
     </div>
 </div>
+{% endblock %}
+
+{% block styles %}
+<style>
+/* Container */
+.internships-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+/* Heading */
+.internships-heading {
+    font-size: 2rem;
+    color: #1d4ed8;
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: 700;
+}
+
+/* Filters */
+.internship-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.internship-filters select,
+.internship-filters button {
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    flex: 1 1 180px;
+    max-width: 250px;
+}
+
+.internship-filters button {
+    background: #1d4ed8;
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.internship-filters button:hover {
+    background: #153eaf;
+}
+
+/* Grid */
+.internship-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+/* Card */
+.internship-card {
+    background: #f5f9ff;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.internship-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+
+/* Card top */
+.card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
+.card-top h3 {
+    font-size: 1.1rem;
+    color: #1d4ed8;
+    margin: 0;
+}
+
+.badges {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.type-badge {
+    background: #1d4ed8;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.featured-badge {
+    background: #facc15;
+    color: #000;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* Skills */
+.skills {
+    margin-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.skill-tag {
+    background: #e0e7ff;
+    color: #1d4ed8;
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+/* Apply Button */
+.apply-button {
+    display: inline-block;
+    margin-top: 15px;
+    text-align: center;
+    background: #1d4ed8;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.2s ease;
+}
+
+.apply-button:hover {
+    background: #153eaf;
+}
+
+/* No Results */
+.no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    font-size: 16px;
+    color: #777;
+}
+
+/* Mobile Fixes */
+@media (max-width: 600px) {
+    .internship-filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .internship-filters select,
+    .internship-filters button {
+        max-width: 100%;
+    }
+}
+</style>
 {% endblock %}
