@@ -1,1 +1,7 @@
+Flask==3.0.3
 gunicorn
+flask-pymongo
+pymongo
+werkzeug
+dnspython
+
