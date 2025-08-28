@@ -15,6 +15,101 @@
             scroll-margin-top: 80px;
         }
 
+        /* ===== Navbar ===== */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 24px;
+            background: #fff;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: #1d4ed8;
+            font-weight: 600;
+            margin: 0 10px;
+        }
+
+        /* Hamburger (hidden on desktop) */
+        .menu-toggle {
+            display: none;
+            font-size: 26px;
+            cursor: pointer;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-auth a {
+            margin-left: 10px;
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links,
+            .nav-auth {
+                display: none;
+                flex-direction: column;
+                background: #1d4ed8;
+                position: absolute;
+                top: 60px;
+                right: 10px;
+                width: 200px;
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .nav-links.active,
+            .nav-auth.active {
+                display: flex;
+            }
+
+            .nav-links li {
+                margin: 10px 0;
+            }
+
+            .nav-links a,
+            .nav-auth a {
+                color: white;
+            }
+        }
+
+        /* ===== Hero Section ===== */
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .hero-buttons .browse-btn {
+            background: white;
+            color: #1d4ed8;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        /* ===== Internships Section ===== */
         .section-heading {
             text-align: center;
             font-size: 28px;
@@ -41,6 +136,29 @@
         .internship-card:hover {
             transform: translateY(-5px);
         }
+
+        /* ===== Footer ===== */
+        .footer {
+            background: #1d4ed8;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 10px 0 0;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+        }
     </style>
 </head>
 
@@ -51,15 +169,17 @@
             <a href="{{ url_for('home') }}" class="logo">🎓 Campus2Career</a>
         </div>
 
-        <ul class="nav-links">
+        <!-- Hamburger Icon (mobile only) -->
+        <div class="menu-toggle" id="menu-toggle">☰</div>
+
+        <ul class="nav-links" id="nav-links">
             <li><a href="{{ url_for('internships') }}">Internships</a></li>
             <li><a href="{{ url_for('aboutus') }}">About Us</a></li>
             <li><a href="{{ url_for('resources') }}">Resources</a></li>
         </ul>
 
-
         <!-- ===== Auth Section ===== -->
-        <div class="nav-auth">
+        <div class="nav-auth" id="nav-auth">
             {% if not user %}
             <a href="{{ url_for('login') }}" class="login-btn">Login</a>
             <a href="{{ url_for('register') }}" class="register-btn">Register</a>
@@ -81,6 +201,7 @@
 
     <!-- ===== Internships Section ===== -->
     <section id="internships-section" class="internships">
+        <h2 class="section-heading">Available Internships</h2>
         <div class="internship-cards">
             {% for internship in internships %}
             <div class="internship-card">
@@ -100,6 +221,14 @@
             <li><a href="#">Contact</a></li>
         </ul>
     </footer>
+
+    <!-- ===== Mobile Navbar Script ===== -->
+    <script>
+        document.getElementById("menu-toggle").addEventListener("click", function () {
+            document.getElementById("nav-links").classList.toggle("active");
+            document.getElementById("nav-auth").classList.toggle("active");
+        });
+    </script>
 </body>
 
 </html>

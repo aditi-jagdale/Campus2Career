@@ -1,161 +1,223 @@
-<!-- DEBUG: base.html is loaded -->
-<!DOCTYPE html>
-<html lang="en">
+<!-- DEBUG: base.html is loaded --> 
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+  <meta charset="UTF-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <title>{% block title %}Campus2Career{% endblock %}</title> 
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> 
+</head> 
+<body> 
+  <!-- ===== Navbar ===== --> 
+  <nav class="navbar"> 
+    <div class="logo"> 
+      <a href="{{ url_for('home') }}">🎓 Campus2Career</a> 
+    </div>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Campus2Career{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
+    <!-- Hamburger Icon (mobile only) -->
+    <div class="menu-toggle" id="menu-toggle">☰</div>
 
-<body>
-    <!-- ===== Navbar ===== -->
-    <nav class="navbar">
-        <div class="logo">
-            <a href="{{ url_for('home') }}">🎓 Campus2Career</a>
-        </div>
+    <ul class="nav-links" id="nav-links"> 
+      <li><a href="{{ url_for('internships') }}">Internships</a></li> 
+      <li><a href="{{ url_for('aboutus') }}">About Us</a></li> 
+      <li><a href="{{ url_for('resources')}}">Resources</a></li> 
+    </ul> 
 
-        <!-- Hamburger Icon (visible on mobile) -->
-        <div class="menu-toggle" id="menu-toggle">☰</div>
+    <div class="nav-auth" id="nav-auth"> 
+      {% if session.get('user') %} 
+        <a href="{{ url_for('profile') }}">Profile</a> 
+        <a href="{{ url_for('logout') }}">Logout</a> 
+      {% else %} 
+        <a href="{{ url_for('login') }}">Login</a> 
+        <a href="{{ url_for('register') }}">Register</a> 
+      {% endif %} 
+    </div> 
+  </nav> 
 
-        <ul class="nav-links" id="nav-links">
-            <li><a href="{{ url_for('internships') }}">Internships</a></li>
-            <li><a href="{{ url_for('aboutus') }}">About Us</a></li>
-            <li><a href="{{ url_for('resources')}}">Resources</a></li>
-        </ul>
+  <!-- ===== Main Content ===== --> 
+  {% block content %}{% endblock %} 
 
-        <div class="nav-auth">
-            {% if session.get('user') %}
-            <a href="{{ url_for('profile') }}">Profile</a>
-            <a href="{{ url_for('logout') }}">Logout</a>
-            {% else %}
-            <a href="{{ url_for('login') }}">Login</a>
-            <a href="{{ url_for('register') }}">Register</a>
-            {% endif %}
-        </div>
-    </nav>
+  <!-- ===== Footer ===== --> 
+  <footer class="footer"> 
+    <p>© 2025 Campus2Career. All rights reserved.</p> 
+    <ul class="footer-links"> 
+      <li><a href="#">Privacy Policy</a></li> 
+      <li><a href="#">Terms</a></li> 
+      <li><a href="#">Contact</a></li> 
+    </ul> 
+  </footer> 
 
-    <!-- ===== Main Content ===== -->
-    {% block content %}{% endblock %}
-    <!-- ===== Footer ===== -->
-    <footer class="footer">
-        <p>© 2025 Campus2Career. All rights reserved.</p>
-        <ul class="footer-links">
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Terms</a></li>
-            <li><a href="#">Contact</a></li>
-        </ul>
-    </footer>
-</body>
+  <!-- ===== Mobile Navbar Script ===== -->
+  <script>
+    document.getElementById("menu-toggle").addEventListener("click", function() {
+      document.getElementById("nav-links").classList.toggle("active");
+      document.getElementById("nav-auth").classList.toggle("active");
+    });
+  </script>
+</body> 
+</html> 
 
-</html>
-{% block styles %}
-<style>
-    .internships-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 40px 20px;
-    }
+{% block styles %} 
+<style> 
+/* ===== Navbar Base ===== */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+}
 
-    .internships-heading {
-        font-size: 36px;
-        color: #1d4ed8;
-        text-align: center;
-        margin-bottom: 30px;
-        font-weight: 700;
-    }
+.navbar a {
+  text-decoration: none;
+  color: #1d4ed8;
+  font-weight: 600;
+  margin: 0 10px;
+}
 
-    .internship-filters {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 15px;
-        margin-bottom: 40px;
-    }
+/* Hamburger (hidden on desktop) */
+.menu-toggle {
+  display: none;
+  font-size: 26px;
+  cursor: pointer;
+}
 
-    .internship-filters select,
-    .internship-filters button {
-        padding: 10px 14px;
-        border-radius: 8px;
-        font-size: 15px;
-        border: 1px solid #080808;
-    }
+/* Desktop Menu */
+.nav-links {
+  display: flex;
+  gap: 15px;
+}
 
-    .internship-filters button {
-        background-color: #1d4ed8;
-        color: white;
-        font-weight: 600;
-        border: none;
-        cursor: pointer;
-    }
+.nav-auth a {
+  margin-left: 10px;
+}
 
-    .internship-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 25px;
-    }
+/* ===== Mobile Styles ===== */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block; /* Show hamburger */
+  }
 
-    .internship-card {
-        background: #f5f9ff;
-        border-radius: 16px;
-        padding: 20px;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-        transition: transform 0.3s ease;
-    }
+  .nav-links,
+  .nav-auth {
+    display: none; /* hidden initially */
+    flex-direction: column;
+    background: #1d4ed8;
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    width: 200px;
+    padding: 15px;
+    border-radius: 8px;
+  }
 
-    .internship-card:hover {
-        transform: translateY(-6px);
-    }
+  .nav-links.active,
+  .nav-auth.active {
+    display: flex; /* show when toggled */
+  }
 
-    .card-top {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 10px;
-    }
+  .nav-links li {
+    margin: 10px 0;
+  }
 
-    .card-top h3 {
-        font-size: 18px;
-        color: #1d4ed8;
-        margin: 0;
-    }
+  .nav-links a,
+  .nav-auth a {
+    color: white;
+  }
+}
 
-    .type-badge {
-        background-color: #1d4ed8;
-        color: white;
-        padding: 6px 12px;
-        border-radius: 12px;
-        font-size: 12px;
-        font-weight: 600;
-    }
-
-    .internship-card p {
-        font-size: 14px;
-        margin: 6px 0;
-    }
-
-    .apply-button {
-        display: inline-block;
-        margin-top: 12px;
-        background-color: #1d4ed8;
-        color: white;
-        padding: 10px 16px;
-        border-radius: 8px;
-        text-decoration: none;
-        font-weight: 600;
-        transition: background-color 0.2s ease;
-    }
-
-    .apply-button:hover {
-        background-color: #1d4ed8;
-    }
-
-    .no-results {
-        grid-column: 1 / -1;
-        text-align: center;
-        font-size: 16px;
-        color: #777;
-    }
-</style>
+/* ===== Internships Section (existing styles) ===== */
+.internships-container { 
+  max-width: 1200px; 
+  margin: 0 auto; 
+  padding: 40px 20px; 
+} 
+.internships-heading { 
+  font-size: 36px; 
+  color: #1d4ed8; 
+  text-align: center; 
+  margin-bottom: 30px; 
+  font-weight: 700; 
+} 
+.internship-filters { 
+  display: flex; 
+  flex-wrap: wrap; 
+  justify-content: center; 
+  gap: 15px; 
+  margin-bottom: 40px; 
+} 
+.internship-filters select, 
+.internship-filters button { 
+  padding: 10px 14px; 
+  border-radius: 8px; 
+  font-size: 15px; 
+  border: 1px solid #080808; 
+} 
+.internship-filters button { 
+  background-color: #1d4ed8; 
+  color: white; 
+  font-weight: 600; 
+  border: none; 
+  cursor: pointer; 
+} 
+.internship-grid { 
+  display: grid; 
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+  gap: 25px; 
+} 
+.internship-card { 
+  background: #f5f9ff; 
+  border-radius: 16px; 
+  padding: 20px; 
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08); 
+  transition: transform 0.3s ease; 
+} 
+.internship-card:hover { 
+  transform: translateY(-6px); 
+} 
+.card-top { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  margin-bottom: 10px; 
+} 
+.card-top h3 { 
+  font-size: 18px; 
+  color: #1d4ed8; 
+  margin: 0; 
+} 
+.type-badge { 
+  background-color: #1d4ed8; 
+  color: white; 
+  padding: 6px 12px; 
+  border-radius: 12px; 
+  font-size: 12px; 
+  font-weight: 600; 
+} 
+.internship-card p { 
+  font-size: 14px; 
+  margin: 6px 0; 
+} 
+.apply-button { 
+  display: inline-block; 
+  margin-top: 12px; 
+  background-color: #1d4ed8; 
+  color: white; 
+  padding: 10px 16px; 
+  border-radius: 8px; 
+  text-decoration: none; 
+  font-weight: 600; 
+  transition: background-color 0.2s ease; 
+} 
+.apply-button:hover { 
+  background-color: #1d4ed8; 
+} 
+.no-results { 
+  grid-column: 1 / -1; 
+  text-align: center; 
+  font-size: 16px; 
+  color: #777; 
+} 
+</style> 
 {% endblock %}
