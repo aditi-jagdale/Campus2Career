@@ -1,151 +1,162 @@
-<!-- DEBUG: base.html is loaded --> 
-<!DOCTYPE html> 
-<html lang="en"> 
-<head> 
-  <meta charset="UTF-8"> 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-  <title>{% block title %}Campus2Career{% endblock %}</title> 
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> 
-</head> 
-<body> 
-  <!-- ===== Navbar ===== --> 
-  <nav class="navbar"> 
-    <div class="logo"> 
-      <a href="{{ url_for('home') }}">🎓 Campus2Career</a> 
-    </div>
+<!-- DEBUG: base.html is loaded -->
+<!DOCTYPE html>
+<html lang="en">
 
-    <!-- Always visible links (even on mobile) -->
-    <ul class="nav-links-fixed"> 
-      <li><a href="{{ url_for('internships') }}">Internships</a></li> 
-      <li><a href="{{ url_for('aboutus') }}">About Us</a></li> 
-    </ul>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Campus2Career{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        /* ===== Navbar Base ===== */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 24px;
+            background: #fff;
+            border-bottom: 1px solid #ddd;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
 
-    <!-- Hamburger Icon (mobile only) -->
-    <div class="menu-toggle" id="menu-toggle">☰</div>
+        .navbar a {
+            text-decoration: none;
+            color: #1d4ed8;
+            font-weight: 600;
+        }
 
-    <!-- Collapsible links -->
-    <ul class="nav-links" id="nav-links"> 
-      <li><a href="{{ url_for('resources')}}">Resources</a></li> 
-    </ul> 
+        .logo a {
+            font-size: 20px;
+            font-weight: 700;
+        }
 
-    <div class="nav-auth" id="nav-auth"> 
-      {% if session.get('user') %} 
-        <a href="{{ url_for('profile') }}">Profile</a> 
-        <a href="{{ url_for('logout') }}">Logout</a> 
-      {% else %} 
-        <a href="{{ url_for('login') }}">Login</a> 
-        <a href="{{ url_for('register') }}">Register</a> 
-      {% endif %} 
-    </div> 
-  </nav> 
+        /* Hamburger (hidden on desktop) */
+        .menu-toggle {
+            display: none;
+            font-size: 26px;
+            cursor: pointer;
+        }
 
-  <!-- ===== Main Content ===== --> 
-  {% block content %}{% endblock %} 
+        /* Desktop Menu */
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
 
-  <!-- ===== Footer ===== --> 
-  <footer class="footer"> 
-    <p>© 2025 Campus2Career. All rights reserved.</p> 
-    <ul class="footer-links"> 
-      <li><a href="#">Privacy Policy</a></li> 
-      <li><a href="#">Terms</a></li> 
-      <li><a href="#">Contact</a></li> 
-    </ul> 
-  </footer> 
+        .nav-auth a {
+            margin-left: 15px;
+        }
 
-  <!-- ===== Mobile Navbar Script ===== -->
-  <script>
-    document.getElementById("menu-toggle").addEventListener("click", function() {
-      document.getElementById("nav-links").classList.toggle("active");
-      document.getElementById("nav-auth").classList.toggle("active");
-    });
-  </script>
-</body> 
-</html> 
+        /* ===== Mobile Styles ===== */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
 
-{% block styles %} 
-<style> 
-/* ===== Navbar Base ===== */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 24px;
-  background: #fff;
-  border-bottom: 1px solid #ddd;
-}
+            .nav-links,
+            .nav-auth {
+                display: none;
+                flex-direction: column;
+                background: #1d4ed8;
+                position: absolute;
+                top: 60px;
+                right: 10px;
+                width: 220px;
+                padding: 15px;
+                border-radius: 8px;
+            }
 
-.navbar a {
-  text-decoration: none;
-  color: #1d4ed8;
-  font-weight: 600;
-  margin: 0 10px;
-}
+            .nav-links.active,
+            .nav-auth.active {
+                display: flex;
+            }
 
-/* Always visible links */
-.nav-links-fixed {
-  display: flex;
-  gap: 15px;
-}
+            .nav-links li {
+                margin: 10px 0;
+            }
 
-.nav-links-fixed li {
-  list-style: none;
-}
+            .nav-links a,
+            .nav-auth a {
+                color: #fff;
+            }
+        }
 
-/* Hamburger (hidden on desktop) */
-.menu-toggle {
-  display: none;
-  font-size: 26px;
-  cursor: pointer;
-}
+        /* ===== Footer ===== */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: #f3f4f6;
+            margin-top: 40px;
+            font-size: 14px;
+            color: #555;
+        }
 
-/* Collapsible links (desktop) */
-.nav-links {
-  display: flex;
-  gap: 15px;
-}
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
 
-.nav-auth a {
-  margin-left: 10px;
-}
+        .footer-links a {
+            color: #1d4ed8;
+            font-weight: 500;
+        }
+    </style>
+</head>
 
-/* ===== Mobile Styles ===== */
-@media (max-width: 768px) {
-  .menu-toggle {
-    display: block; /* Show hamburger */
-  }
+<body>
+    <!-- ===== Navbar ===== -->
+    <nav class="navbar">
+        <div class="logo">
+            <a href="{{ url_for('home') }}">🎓 Campus2Career</a>
+        </div>
 
-  .nav-links,
-  .nav-auth {
-    display: none; /* hidden initially */
-    flex-direction: column;
-    background: #1d4ed8;
-    position: absolute;
-    top: 60px;
-    right: 10px;
-    width: 200px;
-    padding: 15px;
-    border-radius: 8px;
-  }
+        <!-- Hamburger Icon (mobile only) -->
+        <div class="menu-toggle" id="menu-toggle">☰</div>
 
-  .nav-links.active,
-  .nav-auth.active {
-    display: flex; /* show when toggled */
-  }
+        <ul class="nav-links" id="nav-links">
+            <li><a href="{{ url_for('internships') }}">Internships</a></li>
+            <li><a href="{{ url_for('aboutus') }}">About Us</a></li>
+            <li><a href="{{ url_for('resources') }}">Resources</a></li>
+        </ul>
 
-  .nav-links li {
-    margin: 10px 0;
-  }
+        <div class="nav-auth" id="nav-auth">
+            {% if session.get('user') %}
+            <a href="{{ url_for('profile') }}">Profile</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+            {% else %}
+            <a href="{{ url_for('login') }}">Login</a>
+            <a href="{{ url_for('register') }}">Register</a>
+            {% endif %}
+        </div>
+    </nav>
 
-  .nav-links a,
-  .nav-auth a {
-    color: white;
-  }
+    <!-- ===== Main Content ===== -->
+    {% block content %}{% endblock %}
 
-  /* Keep Internships & About visible in row */
-  .nav-links-fixed {
-    flex: 1;
-    justify-content: center;
-  }
-}
-</style> 
-{% endblock %} 
+    <!-- ===== Footer ===== -->
+    <footer class="footer">
+        <p>© 2025 Campus2Career. All rights reserved.</p>
+        <ul class="footer-links">
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </footer>
+
+    <!-- ===== Mobile Navbar Script ===== -->
+    <script>
+        document.getElementById("menu-toggle").addEventListener("click", function () {
+            document.getElementById("nav-links").classList.toggle("active");
+            document.getElementById("nav-auth").classList.toggle("active");
+        });
+    </script>
+</body>
+
+</html>

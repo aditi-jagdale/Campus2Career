@@ -1,234 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campus2Career</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <style>
-        html {
-            scroll-behavior: smooth;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campus2Career</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <style>
+    /* ===== Global Styles ===== */
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #333;
+      line-height: 1.6;
+    }
 
-        #internships-section {
-            scroll-margin-top: 80px;
-        }
+    /* ===== Navbar ===== */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 24px;
+      background: #fff;
+      border-bottom: 1px solid #e5e7eb;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .logo a {
+      text-decoration: none;
+      font-size: 20px;
+      font-weight: 700;
+      color: #1d4ed8;
+    }
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      padding: 0;
+      margin: 0;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: #1d4ed8;
+      font-weight: 600;
+    }
+    .nav-auth a {
+      margin-left: 15px;
+      text-decoration: none;
+      font-weight: 600;
+      color: #1d4ed8;
+    }
 
-        /* ===== Navbar ===== */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 24px;
-            background: #fff;
-            border-bottom: 1px solid #ddd;
-        }
+    /* ===== Hero Section ===== */
+    .hero {
+      text-align: center;
+      padding: 80px 20px;
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      color: white;
+    }
+    .hero h1 {
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+    .hero p {
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+    .hero-buttons .browse-btn {
+      display: inline-block;
+      background: #fff;
+      color: #1d4ed8;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.3s ease;
+    }
+    .hero-buttons .browse-btn:hover {
+      background: #f3f4f6;
+    }
 
-        .navbar a {
-            text-decoration: none;
-            color: #1d4ed8;
-            font-weight: 600;
-            margin: 0 10px;
-        }
+    /* ===== Internships Section ===== */
+    #internships-section {
+      scroll-margin-top: 80px;
+      padding: 60px 20px;
+    }
+    .section-heading {
+      text-align: center;
+      font-size: 28px;
+      margin-bottom: 30px;
+      color: #1e3089;
+      font-weight: 600;
+    }
+    .internship-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      padding: 0 10px;
+    }
+    .internship-card {
+      background: #f5f9ff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s ease;
+    }
+    .internship-card:hover {
+      transform: translateY(-5px);
+    }
+    .internship-card h3 {
+      margin: 0 0 10px;
+      font-size: 20px;
+      color: #1d4ed8;
+    }
 
-        /* Hamburger (hidden on desktop) */
-        .menu-toggle {
-            display: none;
-            font-size: 26px;
-            cursor: pointer;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 15px;
-        }
-
-        .nav-auth a {
-            margin-left: 10px;
-        }
-
-        /* Mobile Styles */
-        @media (max-width: 768px) {
-            .menu-toggle {
-                display: block;
-            }
-
-            .nav-links,
-            .nav-auth {
-                display: none;
-                flex-direction: column;
-                background: #1d4ed8;
-                position: absolute;
-                top: 60px;
-                right: 10px;
-                width: 200px;
-                padding: 15px;
-                border-radius: 8px;
-            }
-
-            .nav-links.active,
-            .nav-auth.active {
-                display: flex;
-            }
-
-            .nav-links li {
-                margin: 10px 0;
-            }
-
-            .nav-links a,
-            .nav-auth a {
-                color: white;
-            }
-        }
-
-        /* ===== Hero Section ===== */
-        .hero {
-            text-align: center;
-            padding: 80px 20px;
-            background: linear-gradient(135deg, #3b82f6, #2563eb);
-            color: white;
-        }
-
-        .hero h1 {
-            font-size: 36px;
-            margin-bottom: 10px;
-        }
-
-        .hero p {
-            font-size: 18px;
-            margin-bottom: 20px;
-        }
-
-        .hero-buttons .browse-btn {
-            background: white;
-            color: #1d4ed8;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-weight: 600;
-            text-decoration: none;
-        }
-
-        /* ===== Internships Section ===== */
-        .section-heading {
-            text-align: center;
-            font-size: 28px;
-            margin: 40px 0 20px;
-            color: #1e3089;
-            font-weight: 600;
-        }
-
-        .internship-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            padding: 0 20px 40px;
-        }
-
-        .internship-card {
-            background: #f5f9ff;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            transition: transform 0.3s ease;
-        }
-
-        .internship-card:hover {
-            transform: translateY(-5px);
-        }
-
-        /* ===== Footer ===== */
-        .footer {
-            background: #1d4ed8;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .footer-links {
-            list-style: none;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 10px 0 0;
-        }
-
-        .footer-links a {
-            color: white;
-            text-decoration: none;
-            font-size: 14px;
-        }
-    </style>
+    /* ===== Footer ===== */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      background: #f3f4f6;
+      margin-top: 40px;
+      font-size: 14px;
+      color: #555;
+    }
+    .footer-links {
+      list-style: none;
+      padding: 0;
+      margin: 10px 0 0;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+    .footer-links a {
+      text-decoration: none;
+      color: #1d4ed8;
+      font-weight: 500;
+    }
+  </style>
 </head>
-
 <body>
-    <!-- ===== Navbar ===== -->
-    <nav class="navbar">
-        <div class="logo">
-            <a href="{{ url_for('home') }}" class="logo">🎓 Campus2Career</a>
+  <!-- ===== Navbar ===== -->
+  <nav class="navbar">
+    <div class="logo">
+      <a href="{{ url_for('home') }}">🎓 Campus2Career</a>
+    </div>
+    <ul class="nav-links">
+      <li><a href="{{ url_for('internships') }}">Internships</a></li>
+      <li><a href="{{ url_for('aboutus') }}">About Us</a></li>
+      <li><a href="{{ url_for('resources') }}">Resources</a></li>
+    </ul>
+    <div class="nav-auth">
+      {% if not user %}
+        <a href="{{ url_for('login') }}">Login</a>
+        <a href="{{ url_for('register') }}">Register</a>
+      {% else %}
+        <a href="{{ url_for('profile') }}">{{ user.name }}</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+      {% endif %}
+    </div>
+  </nav>
+
+  <!-- ===== Hero Section ===== -->
+  <section class="hero">
+    <h1>Find Your Dream Internship 🚀</h1>
+    <p>Smarter search. Better Internships. Brighter future.</p>
+    <div class="hero-buttons">
+      <a href="#internships-section" class="browse-btn">Browse Internships</a>
+    </div>
+  </section>
+
+  <!-- ===== Internships Section ===== -->
+  <section id="internships-section">
+    <h2 class="section-heading">Available Internships</h2>
+    <div class="internship-cards">
+      {% for internship in internships %}
+        <div class="internship-card">
+          <h3>{{ internship.title }}</h3>
+          <p><strong>Company:</strong> {{ internship.company }}</p>
         </div>
+      {% endfor %}
+    </div>
+  </section>
 
-        <!-- Hamburger Icon (mobile only) -->
-        <div class="menu-toggle" id="menu-toggle">☰</div>
-
-        <ul class="nav-links" id="nav-links">
-            <li><a href="{{ url_for('internships') }}">Internships</a></li>
-            <li><a href="{{ url_for('aboutus') }}">About Us</a></li>
-            <li><a href="{{ url_for('resources') }}">Resources</a></li>
-        </ul>
-
-        <!-- ===== Auth Section ===== -->
-        <div class="nav-auth" id="nav-auth">
-            {% if not user %}
-            <a href="{{ url_for('login') }}" class="login-btn">Login</a>
-            <a href="{{ url_for('register') }}" class="register-btn">Register</a>
-            {% else %}
-            <a href="{{ url_for('profile') }}" class="profile-btn">{{ user.name }}</a>
-            <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
-            {% endif %}
-        </div>
-    </nav>
-
-    <!-- ===== Hero Section ===== -->
-    <section class="hero">
-        <h1>Find Your Dream Internship 🚀</h1>
-        <p>Smarter search. Better Internships. Brighter future.</p>
-        <div class="hero-buttons">
-            <a href="#internships-section" class="browse-btn">Browse Internships</a>
-        </div>
-    </section>
-
-    <!-- ===== Internships Section ===== -->
-    <section id="internships-section" class="internships">
-        <h2 class="section-heading">Available Internships</h2>
-        <div class="internship-cards">
-            {% for internship in internships %}
-            <div class="internship-card">
-                <h3>{{ internship.title }}</h3>
-                <p><strong>Company:</strong> {{ internship.company }}</p>
-            </div>
-            {% endfor %}
-        </div>
-    </section>
-
-    <!-- ===== Footer ===== -->
-    <footer class="footer">
-        <p>© 2025 Campus2Career. All rights reserved.</p>
-        <ul class="footer-links">
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Terms</a></li>
-            <li><a href="#">Contact</a></li>
-        </ul>
-    </footer>
-
-    <!-- ===== Mobile Navbar Script ===== -->
-    <script>
-        document.getElementById("menu-toggle").addEventListener("click", function () {
-            document.getElementById("nav-links").classList.toggle("active");
-            document.getElementById("nav-auth").classList.toggle("active");
-        });
-    </script>
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <p>© 2025 Campus2Career. All rights reserved.</p>
+    <ul class="footer-links">
+      <li><a href="#">Privacy Policy</a></li>
+      <li><a href="#">Terms</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </footer>
 </body>
-
 </html>
