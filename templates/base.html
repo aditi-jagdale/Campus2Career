@@ -14,12 +14,17 @@
       <a href="{{ url_for('home') }}">🎓 Campus2Career</a> 
     </div>
 
+    <!-- Always visible links (even on mobile) -->
+    <ul class="nav-links-fixed"> 
+      <li><a href="{{ url_for('internships') }}">Internships</a></li> 
+      <li><a href="{{ url_for('aboutus') }}">About Us</a></li> 
+    </ul>
+
     <!-- Hamburger Icon (mobile only) -->
     <div class="menu-toggle" id="menu-toggle">☰</div>
 
+    <!-- Collapsible links -->
     <ul class="nav-links" id="nav-links"> 
-      <li><a href="{{ url_for('internships') }}">Internships</a></li> 
-      <li><a href="{{ url_for('aboutus') }}">About Us</a></li> 
       <li><a href="{{ url_for('resources')}}">Resources</a></li> 
     </ul> 
 
@@ -76,6 +81,16 @@
   margin: 0 10px;
 }
 
+/* Always visible links */
+.nav-links-fixed {
+  display: flex;
+  gap: 15px;
+}
+
+.nav-links-fixed li {
+  list-style: none;
+}
+
 /* Hamburger (hidden on desktop) */
 .menu-toggle {
   display: none;
@@ -83,7 +98,7 @@
   cursor: pointer;
 }
 
-/* Desktop Menu */
+/* Collapsible links (desktop) */
 .nav-links {
   display: flex;
   gap: 15px;
@@ -125,99 +140,12 @@
   .nav-auth a {
     color: white;
   }
-}
 
-/* ===== Internships Section (existing styles) ===== */
-.internships-container { 
-  max-width: 1200px; 
-  margin: 0 auto; 
-  padding: 40px 20px; 
-} 
-.internships-heading { 
-  font-size: 36px; 
-  color: #1d4ed8; 
-  text-align: center; 
-  margin-bottom: 30px; 
-  font-weight: 700; 
-} 
-.internship-filters { 
-  display: flex; 
-  flex-wrap: wrap; 
-  justify-content: center; 
-  gap: 15px; 
-  margin-bottom: 40px; 
-} 
-.internship-filters select, 
-.internship-filters button { 
-  padding: 10px 14px; 
-  border-radius: 8px; 
-  font-size: 15px; 
-  border: 1px solid #080808; 
-} 
-.internship-filters button { 
-  background-color: #1d4ed8; 
-  color: white; 
-  font-weight: 600; 
-  border: none; 
-  cursor: pointer; 
-} 
-.internship-grid { 
-  display: grid; 
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
-  gap: 25px; 
-} 
-.internship-card { 
-  background: #f5f9ff; 
-  border-radius: 16px; 
-  padding: 20px; 
-  box-shadow: 0 6px 18px rgba(0,0,0,0.08); 
-  transition: transform 0.3s ease; 
-} 
-.internship-card:hover { 
-  transform: translateY(-6px); 
-} 
-.card-top { 
-  display: flex; 
-  justify-content: space-between; 
-  align-items: center; 
-  margin-bottom: 10px; 
-} 
-.card-top h3 { 
-  font-size: 18px; 
-  color: #1d4ed8; 
-  margin: 0; 
-} 
-.type-badge { 
-  background-color: #1d4ed8; 
-  color: white; 
-  padding: 6px 12px; 
-  border-radius: 12px; 
-  font-size: 12px; 
-  font-weight: 600; 
-} 
-.internship-card p { 
-  font-size: 14px; 
-  margin: 6px 0; 
-} 
-.apply-button { 
-  display: inline-block; 
-  margin-top: 12px; 
-  background-color: #1d4ed8; 
-  color: white; 
-  padding: 10px 16px; 
-  border-radius: 8px; 
-  text-decoration: none; 
-  font-weight: 600; 
-  transition: background-color 0.2s ease; 
-} 
-.apply-button:hover { 
-  background-color: #1d4ed8; 
-} 
-.no-results { 
-  grid-column: 1 / -1; 
-  text-align: center; 
-  font-size: 16px; 
-  color: #777; 
-} 
+  /* Keep Internships & About visible in row */
+  .nav-links-fixed {
+    flex: 1;
+    justify-content: center;
+  }
+}
 </style> 
-{% endblock %}
+{% endblock %} 
