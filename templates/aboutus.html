@@ -49,14 +49,122 @@
       </p>
     </div>
 
-    <div class="about-card">
+    <div class="about-card join-card">
       <h2>✨ Join Us</h2>
       <p>
         Whether you're exploring your first internship or preparing for the workforce, 
         <strong>Campus2Career</strong> is here to guide you.  
         🚀 <b>Your journey starts today!</b>
       </p>
+      <a href="{{ url_for('register') }}" class="join-btn">Get Started</a>
     </div>
   </div>
 </section>
+{% endblock %}
+
+{% block styles %}
+<style>
+/* ===== About Us Page ===== */
+.aboutus {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 20px;
+}
+
+.about-title {
+  font-size: 40px;
+  font-weight: 700;
+  color: #1d4ed8;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.about-intro {
+  text-align: center;
+  font-size: 18px;
+  line-height: 1.7;
+  margin-bottom: 50px;
+  color: #333;
+}
+
+.highlight {
+  color: #1d4ed8;
+  font-weight: 600;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+.about-card {
+  background: #f5f9ff;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease;
+}
+
+.about-card:hover {
+  transform: translateY(-6px);
+}
+
+.about-card h2 {
+  font-size: 20px;
+  color: #1d4ed8;
+  margin-bottom: 12px;
+}
+
+.about-card p, .about-card ul {
+  font-size: 15px;
+  color: #444;
+  line-height: 1.6;
+}
+
+.about-card ul {
+  padding-left: 18px;
+}
+
+.join-card {
+  text-align: center;
+}
+
+.join-btn {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 12px 20px;
+  background: #1d4ed8;
+  color: white;
+  font-weight: 600;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+
+.join-btn:hover {
+  background: #153eaa;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+  .about-title {
+    font-size: 32px;
+  }
+  .about-intro {
+    font-size: 16px;
+    margin-bottom: 35px;
+  }
+  .about-grid {
+    gap: 18px; /* tighter spacing on small screens */
+  }
+  .about-card {
+    padding: 20px;
+  }
+  .join-btn {
+    width: 100%; /* full-width button for tap friendliness */
+    padding: 14px;
+  }
+}
+</style>
 {% endblock %}
