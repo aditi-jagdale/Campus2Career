@@ -13,6 +13,9 @@
             background: #1d4ed8;
             padding: 12px 20px;
             color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
         .navbar .logo {
@@ -57,7 +60,7 @@
             border-radius: 3px;
         }
 
-        /* Mobile Menu */
+        /* ===== Mobile Menu ===== */
         @media (max-width: 768px) {
             .navbar ul {
                 display: none;
@@ -76,9 +79,19 @@
                 display: flex;
             }
 
+            .navbar ul li {
+                margin: 10px 0;
+                text-align: right;
+            }
+
             .menu-toggle {
                 display: flex;
             }
+        }
+
+        /* ===== Page Layout ===== */
+        main {
+            padding: 20px;
         }
     </style>
 </head>
@@ -120,6 +133,15 @@
         function toggleMenu() {
             document.getElementById("menu").classList.toggle("show");
         }
+
+        // Close mobile menu when link is clicked
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll("#menu a").forEach(link => {
+                link.addEventListener("click", () => {
+                    document.getElementById("menu").classList.remove("show");
+                });
+            });
+        });
     </script>
 </body>
 </html>
