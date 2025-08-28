@@ -1,147 +1,141 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Campus2Career{% endblock %}</title>
-    <style>
-        /* ===== Navbar ===== */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #1d4ed8;
-            padding: 12px 20px;
-            color: white;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+<!-- DEBUG: base.html is loaded --> 
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+<meta charset="UTF-8"> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+<title>{% block title %}Campus2Career{% endblock %}</title> 
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> 
+</head> 
+<body> 
+<!-- ===== Navbar ===== --> 
+<nav class="navbar"> 
+<div class="logo"> 
+<a href="{{ url_for('home') }}">🎓 Campus2Career</a> 
+</div> 
+<ul class="nav-links"> 
+<li><a href="{{ url_for('internships') }}">Internships</a></li> 
+<li><a href="{{ url_for('aboutus') }}">About Us</a></li> 
+<li><a href="{{ url_for('resources')}}">Resources</a></li> 
+</ul> 
+<div class="nav-auth"> 
+{% if session.get('user') %} 
+<a href="{{ url_for('profile') }}">Profile</a> 
+<a href="{{ url_for('logout') }}">Logout</a> 
+{% else %} 
+<a href="{{ url_for('login') }}">Login</a> 
+<a href="{{ url_for('register') }}">Register</a> 
+{% endif %} 
+</div> 
+</nav> 
+<!-- ===== Main Content ===== --> 
+{% block content %}{% endblock %} 
+<!-- ===== Footer ===== --> 
+<footer class="footer"> 
+<p>© 2025 Campus2Career. All rights reserved.</p> 
+<ul class="footer-links"> 
+<li><a href="#">Privacy Policy</a></li> 
+<li><a href="#">Terms</a></li> 
+<li><a href="#">Contact</a></li> 
+</ul> 
+</footer> 
+</body> 
+</html> 
+{% block styles %} 
+<style> 
+.internships-container { 
+max-width: 1200px; 
+margin: 0 auto; 
+padding: 40px 20px; 
+} 
+.internships-heading { 
+font-size: 36px; 
+color: #1d4ed8; 
+text-align: center; 
+margin-bottom: 30px; 
+font-weight: 700; 
+} 
+.internship-filters { 
+display: flex; 
+flex-wrap: wrap; 
+justify-content: center; 
+gap: 15px; 
+margin-bottom: 40px; 
+} 
+.internship-filters select, 
+.internship-filters button { 
+padding: 10px 14px; 
+border-radius: 8px; 
+font-size: 15px; 
+border: 1px solid #080808; 
+} 
+.internship-filters button { 
+background-color: #1d4ed8; 
+color: white; 
+font-weight: 600; 
+border: none; 
+cursor: pointer; 
+} 
+.internship-grid { 
+display: grid; 
+grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+gap: 25px; 
+} 
+.internship-card { 
+background: #f5f9ff; 
+border-radius: 16px; 
+padding: 20px; 
+box-shadow: 0 6px 18px rgba(0,0,0,0.08); 
+transition: transform 0.3s ease; 
+} 
+.internship-card:hover { 
+transform: translateY(-6px); 
+} 
+.card-top { 
+display: flex; 
+justify-content: space-between; 
+align-items: center; 
+margin-bottom: 10px; 
+} 
+.card-top h3 { 
+font-size: 18px; 
+color: #1d4ed8; 
+margin: 0; 
+} 
+.type-badge { 
+background-color: #1d4ed8; 
+color: white; 
+padding: 6px 12px; 
+border-radius: 12px; 
+font-size: 12px; 
+font-weight: 600; 
+} 
+.internship-card p { 
+font-size: 14px; 
+margin: 6px 0; 
+} 
+.apply-button { 
+display: inline-block; 
+margin-top: 12px; 
+background-color: #1d4ed8; 
+color: white; 
+padding: 10px 16px; 
+border-radius: 8px; 
+text-decoration: none; 
+font-weight: 600; 
+transition: background-color 0.2s ease; 
+} 
+.apply-button:hover { 
+background-color: #1d4ed8; 
+} 
+.no-results { 
+grid-column: 1 / -1; 
+text-align: center; 
+font-size: 16px; 
+color: #777; 
+} 
+</style> 
+{% endblock %}
 
-        .navbar .logo {
-            font-size: 20px;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
 
-        /* Desktop Menu */
-        .navbar ul {
-            list-style: none;
-            display: flex;
-            gap: 18px;
-            margin: 0;
-            padding: 0;
-        }
 
-        .navbar ul li a {
-            color: white;
-            text-decoration: none;
-            font-size: 15px;
-            font-weight: 500;
-            transition: color 0.2s ease;
-        }
-
-        .navbar ul li a:hover {
-            color: #facc15; /* yellow highlight */
-        }
-
-        /* ===== Hamburger Menu ===== */
-        .menu-toggle {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-            gap: 5px;
-        }
-
-        .menu-toggle span {
-            width: 25px;
-            height: 3px;
-            background: white;
-            border-radius: 3px;
-        }
-
-        /* ===== Mobile Menu ===== */
-        @media (max-width: 768px) {
-            .navbar ul {
-                display: none;
-                flex-direction: column;
-                background: #1d4ed8;
-                position: absolute;
-                top: 60px;
-                right: 20px;
-                width: 200px;
-                padding: 15px;
-                border-radius: 10px;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            }
-
-            .navbar ul.show {
-                display: flex;
-            }
-
-            .navbar ul li {
-                margin: 10px 0;
-                text-align: right;
-            }
-
-            .menu-toggle {
-                display: flex;
-            }
-        }
-
-        /* ===== Page Layout ===== */
-        main {
-            padding: 20px;
-        }
-    </style>
-</head>
-<body>
-    <!-- ===== Navbar ===== -->
-    <nav class="navbar">
-        <div class="logo">Campus2Career</div>
-
-        <!-- Hamburger Menu Button -->
-        <div class="menu-toggle" onclick="toggleMenu()">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-
-        <!-- Navbar Links -->
-        <ul id="menu">
-            <li><a href="{{ url_for('home') }}">Home</a></li>
-            <li><a href="{{ url_for('internships') }}">Internships</a></li>
-            <li><a href="{{ url_for('resources') }}">Resources</a></li>
-            <li><a href="{{ url_for('about') }}">About</a></li>
-
-            {% if user %}
-                <li><a href="{{ url_for('profile') }}">Profile</a></li>
-                <li><a href="{{ url_for('logout') }}">Logout</a></li>
-            {% else %}
-                <li><a href="{{ url_for('login') }}">Login</a></li>
-                <li><a href="{{ url_for('register') }}">Register</a></li>
-            {% endif %}
-        </ul>
-    </nav>
-
-    <!-- ===== Page Content ===== -->
-    <main>
-        {% block content %}{% endblock %}
-    </main>
-
-    <script>
-        function toggleMenu() {
-            document.getElementById("menu").classList.toggle("show");
-        }
-
-        // Close mobile menu when link is clicked
-        document.addEventListener("DOMContentLoaded", () => {
-            document.querySelectorAll("#menu a").forEach(link => {
-                link.addEventListener("click", () => {
-                    document.getElementById("menu").classList.remove("show");
-                });
-            });
-        });
-    </script>
-</body>
-</html>

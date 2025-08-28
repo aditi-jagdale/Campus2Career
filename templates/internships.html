@@ -6,7 +6,6 @@
 <div class="internships-container">
     <h2 class="internships-heading">🚀 Explore Top Internships</h2>
 
-    <!-- ===== Filters ===== -->
     <form method="get" class="internship-filters">
         <select name="domain">
             <option value="">All Domains</option>
@@ -42,187 +41,32 @@
         <button type="submit">Filter</button>
     </form>
 
-    <!-- ===== Internship Grid ===== -->
     <div class="internship-grid">
         {% for internship in internships %}
         <div class="internship-card {% if internship.featured %}featured{% endif %}">
             <div class="card-top">
+                
                 <h3>{{ internship.title }}</h3>
                 <span class="type-badge">{{ internship.type }}</span>
+                {% if internship.featured %}
+                <span class="featured-badge">⭐ Featured</span>
+                {% endif %}
             </div>
-
-            {% if internship.featured %}
-            <span class="featured-badge">⭐ Featured</span>
-            {% endif %}
-
             <p><strong>Company:</strong> {{ internship.company }}</p>
             <p><strong>Domain:</strong> {{ internship.domain }}</p>
             <p><strong>Duration:</strong> {{ internship.duration }}</p>
-
             <div class="skills">
                 {% for skill in internship.skills %}
                 <span class="skill-tag">{{ skill }}</span>
                 {% endfor %}
             </div>
-
             <a href="{{ internship.link }}" target="_blank" class="apply-button">Apply Now</a>
         </div>
         {% endfor %}
-
         {% if not internships %}
         <p class="no-results">No internships found. Try different filters!</p>
         {% endif %}
     </div>
 </div>
 {% endblock %}
-
-{% block styles %}
-<style>
-/* ===== Container ===== */
-.internships-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 30px 20px;
-}
-
-/* ===== Heading ===== */
-.internships-heading {
-    font-size: 28px;
-    color: #1d4ed8;
-    text-align: center;
-    margin-bottom: 20px;
-    font-weight: 700;
-}
-
-/* ===== Filters ===== */
-.internship-filters {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px;
-    margin-bottom: 30px;
-}
-
-.internship-filters select,
-.internship-filters button {
-    padding: 10px 14px;
-    border-radius: 8px;
-    font-size: 14px;
-    border: 1px solid #d1d5db;
-    background: #fff;
-}
-
-.internship-filters button {
-    background-color: #1d4ed8;
-    color: white;
-    font-weight: 600;
-    cursor: pointer;
-    border: none;
-    transition: background 0.2s ease;
-}
-
-.internship-filters button:hover {
-    background-color: #153fa6;
-}
-
-/* ===== Grid Layout ===== */
-.internship-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-}
-
-/* ===== Cards ===== */
-.internship-card {
-    background: #f9fbff;
-    border-radius: 12px;
-    padding: 18px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    transition: transform 0.3s ease;
-}
-
-.internship-card:hover {
-    transform: translateY(-5px);
-}
-
-.internship-card.featured {
-    border: 2px solid #f59e0b;
-    background: #fff8e7;
-}
-
-/* ===== Card Header ===== */
-.card-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.card-top h3 {
-    font-size: 18px;
-    color: #1d4ed8;
-    margin: 0;
-}
-
-/* ===== Badges ===== */
-.type-badge {
-    background-color: #1d4ed8;
-    color: white;
-    padding: 4px 10px;
-    border-radius: 8px;
-    font-size: 12px;
-}
-
-.featured-badge {
-    display: inline-block;
-    margin-top: 6px;
-    background: #f59e0b;
-    color: white;
-    padding: 4px 10px;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: 600;
-}
-
-/* ===== Skills ===== */
-.skills {
-    margin: 10px 0;
-}
-
-.skill-tag {
-    display: inline-block;
-    background: #e0e7ff;
-    color: #1d4ed8;
-    padding: 4px 10px;
-    border-radius: 8px;
-    font-size: 12px;
-    margin: 4px 4px 0 0;
-}
-
-/* ===== Buttons ===== */
-.apply-button {
-    display: inline-block;
-    margin-top: 10px;
-    background-color: #1d4ed8;
-    color: white;
-    padding: 8px 14px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: background-color 0.2s ease;
-}
-
-.apply-button:hover {
-    background-color: #153fa6;
-}
-
-/* ===== No Results ===== */
-.no-results {
-    grid-column: 1 / -1;
-    text-align: center;
-    font-size: 15px;
-    color: #6b7280;
-}
-</style>
-{% endblock %}
-
 
