@@ -11,7 +11,7 @@ domains = [
 ]
 
 companies = [
-    "Microsoft", "Google", "Amazon", "Meta", "Oracle", "TCS", "Infosys", "Cisco", "Eduskills",
+    "Microsoft", "Google", "Amazon", "Meta", "TCS", "Infosys", "Cisco", "Eduskills",
     "IBM", "Accenture", "Wipro", "Salesforce", "Adobe", "Zoho", "Deloitte", "Flipkart", "HCL",
     "SAP", "Capgemini"
 ]
@@ -24,7 +24,6 @@ base_links = {
     "Google": "https://www.coursera.org/professional-certificates/google-ux-design",
     "Amazon": "https://www.aws.training/Details/Curriculum?id=20685",
     "Meta": "https://www.coursera.org/professional-certificates/meta-front-end-developer",
-    "Oracle": "https://www.oracle.com/careers/students/internships/",
     "TCS": "https://www.tcs.com/careers/internship",
     "Infosys": "https://www.infosys.com/careers/internships.html",
     "Cisco": "https://www.netacad.com/courses/security",
