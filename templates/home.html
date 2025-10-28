@@ -2,10 +2,10 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Campus2Career</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
   <style>
     html {
       scroll-behavior: smooth;
@@ -186,37 +186,352 @@
     }
   </script>
 
-
   <!-- ===== Hero Section ===== -->
   <section class="hero">
     <h1>Find Your Dream Internship 🚀</h1>
     <p>Smarter search. Better Internships. Brighter future.</p>
     <div class="hero-buttons">
-      <a href="#internships-section" class="browse-btn">Browse Internships</a>
+      <a href="#internships-section" class="explore-more-btn">Explore more</a>
+      <a href="{{ url_for('get_started') }}" class="get-started-btn">Get Started</a>
     </div>
   </section>
+<!-- ===== Internships Section ===== -->
+<section id="internships-section" class="internships">
+  <div class="internship-content">
+    
 
-  <!-- ===== Internships Section ===== -->
-  <section id="internships-section" class="internships">
-    <div class="internship-cards">
-      {% for internship in internships %}
-      <div class="internship-card">
-        <h3>{{ internship.title }}</h3>
-        <p><strong>Company:</strong> {{ internship.company }}</p>
+    <!-- Student Impact -->
+    <div class="impact-section">
+      
+      <p class="testimonial">A curated platform that connects students to real opportunities — no clutter, just impact.</p>
+      <ul class="stats">
+        <li><span>500+</span> Internships Curated</li>
+        <li><span>200+</span> Companies Featured</li>
+        <li><span>100+</span> Skill-based Domains</li>
+      </ul>
+    </div>
+
+    <!-- How It Works -->
+    <div class="how-it-works-section">
+      <h2>🧠 How It Works</h2>
+      <div class="how-it-works-cards">
+        <!-- Card 1: Create Profile -->
+        <div class="how-card">
+          <div class="card-icon">📝</div>
+          <h3>Step 1 : Create Your Profile</h3>
+          <p>Add your skills, experiences, and resume to showcase your strengths and get noticed by top companies.</p>
+        </div>
+
+        <!-- Card 2: Browse Internships -->
+        <div class="how-card">
+          <div class="card-icon">🔍</div>
+          <h3>Step 2 : Browse Internships</h3>
+          <p>Search opportunities by domain, location, or tags to find internships that align perfectly with your interests.</p>
+        </div>
+
+        <!-- Card 3: Apply & Track -->
+        <div class="how-card">
+          <div class="card-icon">🚀</div>
+          <h3>Step 3 : Apply & Track Progress</h3>
+          <p>Save internships, apply with ease, and monitor your application progress — all in one seamless dashboard.</p>
+        </div>
       </div>
-      {% endfor %}
     </div>
-  </section>
 
-  <!-- ===== Footer ===== -->
-  <footer class="footer">
-    <p>© 2025 Campus2Career. All rights reserved.</p>
-    <ul class="footer-links">
-      <li><a href="#">Privacy Policy</a></li>
-      <li><a href="#">Terms</a></li>
-      <li><a href="#">Contact</a></li>
-    </ul>
-  </footer>
-</body>
+    <!-- Why Campus2Career -->
+    <div class="why-section">
+      <h2>💡 Why Campus2Career?</h2>
+      <p class="why">“A platform built for purpose — where student potential meets meaningful experience.”</p>
+      <p class="why">Built by students who wanted something better — curated listings, clean design, and real impact. No clutter. No distractions. Just internships that matter.</p>
+      <a class="learn-more" href="{{ url_for('aboutus') }}">Learn more →</a>
+    </div>
+  </div>
+</section>
 
-</html>
+<!-- ===== CSS for Updated Section ===== -->
+<style>
+  /* General Section Styles */
+  #internships-section {
+    padding: 80px 20px;
+    background: linear-gradient(135deg, #f5f9ff, #e0f0ff);
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+  }
+
+  #internships-section h1 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: #1e3089;
+    margin-bottom: 50px;
+  }
+
+  #internships-section h2 {
+    font-size: 2rem;
+    color: #1e3089;
+    margin-bottom: 20px;
+    position: relative;
+    display: inline-block;
+  }
+
+  #internships-section h2::after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: #2563eb;
+    margin: 8px auto 0 auto;
+    border-radius: 2px;
+  }
+
+  /* Student Impact */
+  .testimonial {
+    font-style: italic;
+    color: #333;
+    margin-bottom: 25px;
+    font-size: 17px;
+  }
+
+  .stats {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    margin-bottom: 50px;
+  }
+
+  .stats li {
+    font-size: 16px;
+    color: #2563eb;
+    font-weight: 600;
+    transition: transform 0.3s ease, color 0.3s ease;
+  }
+
+  .stats li span {
+    font-size: 22px;
+    font-weight: 700;
+    display: block;
+    color: #1e3089;
+    margin-bottom: 5px;
+  }
+
+  .stats li:hover {
+    transform: translateY(-5px);
+    color: #1e3089;
+  }
+
+  /* How It Works Cards */
+  .how-it-works-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+  }
+
+  .how-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 30px 20px;
+    box-shadow: 0 12px 25px rgba(0,0,0,0.08);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .how-card:hover {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 25px 40px rgba(0,0,0,0.15);
+  }
+
+  .card-icon {
+    font-size: 3rem;
+    color: #2563eb;
+    margin-bottom: 15px;
+    transition: transform 0.3s ease, color 0.3s ease;
+  }
+
+  .how-card:hover .card-icon {
+    transform: rotate(10deg) scale(1.1);
+    color: #1e3089;
+  }
+
+  .how-card h3 {
+    font-size: 1.5rem;
+    color: #1e3089;
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+
+  .how-card p {
+    font-size: 16px;
+    color: #333;
+    line-height: 1.6;
+  }
+
+  /* Why Section */
+  .why-section {
+  margin-top: 60px; /* adds space above the section */
+}
+
+  .why {
+    max-width: 700px;
+    margin: 0 auto 20px auto;
+    font-size: 16px;
+    color: #333;
+    line-height: 1.6;
+  }
+
+  .learn-more {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 28px;
+    background: #2563eb;
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 10px;
+    transition: background 0.3s ease, transform 0.3s ease;
+  }
+
+  .learn-more:hover {
+    background: #1e3089;
+    transform: translateY(-3px);
+  }
+
+  /* Animation for fade-in */
+  .impact-section, .how-it-works-section, .why-section {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.8s forwards;
+  }
+
+  .impact-section { animation-delay: 0.1s; }
+  .how-it-works-section { animation-delay: 0.3s; }
+  .why-section { animation-delay: 0.5s; }
+
+  @keyframes fadeInUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .stats {
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .how-it-works-cards {
+      gap: 20px;
+    }
+  }
+</style>
+<!-- ===== Footer ===== -->
+<footer class="footer">
+  <p>© 2025 Campus2Career. All rights reserved.</p>
+  <ul class="footer-links">
+    <li><a href="#">Privacy Policy</a></li>
+    <li><a href="#">Terms</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <!-- Back to Top Button integrated -->
+  <button id="backToTop" title="Go to top">⬆️</button>
+</footer>
+
+<!-- ===== CSS ===== -->
+<style>
+  .footer {
+    background: #010724;
+    color: #fff;
+    padding: 40px 20px 60px 20px;
+    text-align: center;
+    position: relative;
+  }
+
+  .footer p {
+    margin: 0 0 15px 0;
+    font-size: 16px;
+  }
+
+  .footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+  }
+
+  .footer-links li a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+  }
+
+  .footer-links li a:hover {
+    color: #001134;
+  }
+
+  /* Back to Top Button */
+  #backToTop {
+    display: none; /* Hidden by default */
+    position: absolute;
+    top: -30px;
+    right: 20px;
+    font-size: 22px;
+    border: none;
+    outline: none;
+    background-color: #fdfefe;
+    color: white;
+    cursor: pointer;
+    padding: 12px 16px;
+    border-radius: 50%;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+  }
+
+  #backToTop:hover {
+    background-color: #020410;
+    transform: translateY(-5px) scale(1.1);
+  }
+
+  /* Responsive Footer */
+  @media (max-width: 768px) {
+    .footer-links {
+      flex-direction: column;
+      gap: 15px;
+    }
+    #backToTop {
+      top: -40px;
+      right: 50%;
+      transform: translateX(50%);
+    }
+  }
+</style>
+
+<!-- ===== JavaScript ===== -->
+<script>
+  // Get the button
+  const backToTopButton = document.getElementById("backToTop");
+
+  // Show button when scrolled down 200px
+  window.onscroll = function() {scrollFunction()};
+
+  function scrollFunction() {
+    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+      backToTopButton.style.display = "block";
+    } else {
+      backToTopButton.style.display = "none";
+    }
+  }
+
+  // Smooth scroll to top
+  backToTopButton.addEventListener('click', function(){
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+</script>

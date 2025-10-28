@@ -56,6 +56,7 @@ def register():
     return render_template("register.html")
 
 # ===== Login =====
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -67,8 +68,8 @@ def login():
             # Store user session
             session["user"] = {
                 "_id": str(user["_id"]),
-                "name": user.get("name"),
-                "email": user.get("email"),
+                "name": user.get("name", ""),
+                "email": user.get("email", ""),
                 "college": user.get("college", ""),
                 "graduation_year": user.get("graduation_year", ""),
                 "links": user.get("links", ""),
@@ -80,12 +81,25 @@ def login():
                 "personal_statement": user.get("personal_statement", ""),
                 "resume": user.get("resume", "")
             }
+
             flash("Login successful!", "success")
+
+            # ✅ Check if profile is incomplete
+            incomplete_fields = [
+                "name", "college", "graduation_year",
+                "skills", "domains", "internship_type"
+            ]
+            if any(not session["user"].get(field) for field in incomplete_fields):
+                flash("Please complete your profile before continuing.", "warning")
+                return redirect(url_for("profile"))
+
+            # ✅ If profile is complete, go to home or internships
             return redirect(url_for("home"))
 
         flash("Invalid email or password!", "danger")
 
     return render_template("login.html")
+
 
 # ===== Logout =====
 @app.route("/logout")
@@ -94,17 +108,21 @@ def logout():
     flash("Logged out successfully!", "info")
     return redirect(url_for("home"))
 
+
 # ===== Profile Page =====
 @app.route("/profile")
 def profile():
     if not session.get("user"):
+        flash("Please log in first.", "warning")
         return redirect(url_for("login"))
     return render_template("profile.html")
+
 
 # ===== Update Profile =====
 @app.route("/update_profile", methods=["POST"])
 def update_profile():
     if not session.get("user"):
+        flash("Please log in first.", "warning")
         return redirect(url_for("login"))
 
     user_id = session["user"]["_id"]
@@ -138,13 +156,35 @@ def update_profile():
         {"$set": update_data}
     )
 
-    # Refresh session with updated user
+    # Refresh session with updated user info
     user = mongo.db.users.find_one({"_id": ObjectId(user_id)})
     user["_id"] = str(user["_id"])
     session["user"] = user
 
-    flash("Profile updated successfully!", "success")
-    return redirect(url_for("profile"))
+    flash("Profile updated successfully! Redirecting to internships...", "success")
+    
+    # ✅ Redirect to internships page instead of profile
+    return redirect(url_for("internships"))
+
+@app.route('/get_started')
+def get_started():
+    user = session.get("user")
+
+    # 1️⃣ User not logged in
+    if not user:
+        flash("Please register or login to get started.", "info")
+        return redirect(url_for("login"))  # Or "register" if you want new users to go straight to register
+
+    # 2️⃣ Check if profile is complete
+    required_fields = ["name", "college", "graduation_year", "skills", "domains", "internship_type"]
+    incomplete_fields = [field for field in required_fields if not user.get(field)]
+
+    if incomplete_fields:
+        flash("Please complete your profile first.", "warning")
+        return redirect(url_for("profile"))
+
+    # 3️⃣ All good → go to internships
+    return redirect(url_for("internships"))
 
 # ===== About Us =====
 @app.route("/aboutus")
@@ -159,7 +199,7 @@ def resources():
 from insert import internships as all_internships
 
 
-@app.route('/internships')
+'''@app.route('/internships')
 def internships():
     domain = request.args.get('domain')
     company = request.args.get('company')
@@ -173,9 +213,37 @@ def internships():
     if type_:
         filtered = [i for i in filtered if i['type'] == type_]
 
+    return render_template("internships.html", internships=filtered)'''
+@app.route('/internships')
+def internships():
+    # ===== Check if user is logged in =====
+    if not session.get("user"):
+        flash("Please log in first to view internships.", "warning")
+        return redirect(url_for("login"))
+
+    user = session["user"]
+
+    # ===== Ensure profile is complete =====
+    required_fields = ["name", "college", "graduation_year", "skills", "domains", "internship_type"]
+    incomplete_fields = [field for field in required_fields if not user.get(field)]
+    if incomplete_fields:
+        flash("Please complete your profile before accessing internships.", "warning")
+        return redirect(url_for("profile"))
+
+    # ===== Filter internships if query params provided =====
+    domain = request.args.get('domain')
+    company = request.args.get('company')
+    type_ = request.args.get('type')
+
+    filtered = all_internships
+    if domain:
+        filtered = [i for i in filtered if i['domain'] == domain]
+    if company:
+        filtered = [i for i in filtered if i['company'] == company]
+    if type_:
+        filtered = [i for i in filtered if i['type'] == type_]
+
     return render_template("internships.html", internships=filtered)
-
-
 
 
 # ===== Run App =====
