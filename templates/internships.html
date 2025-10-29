@@ -3,10 +3,15 @@
 {% block title %}Explore Internships | Campus2Career{% endblock %}
 
 {% block content %}
+
 <div class="internships-container">
+ 
     <h2 class="internships-heading">🚀 Explore Top Internships</h2>
 
+    <!-- 🔍 FILTERS + SEARCH + SORT -->
     <form method="get" class="internship-filters">
+        <input type="text" name="search" placeholder="🔍 Search internships..." value="{{ request.args.get('search', '') }}" />
+
         <select name="domain">
             <option value="">All Domains</option>
             {% for domain in [
@@ -16,7 +21,7 @@
             "Prompt Engineering", "DevRel & Community Building", "Digital Marketing",
             "Content Creation & SEO", "Business Analytics", "Finance & FinTech", "LegalTech"
             ] %}
-            <option value="{{ domain }}">{{ domain }}</option>
+            <option value="{{ domain }}" {% if request.args.get('domain') == domain %}selected{% endif %}>{{ domain }}</option>
             {% endfor %}
         </select>
 
@@ -27,46 +32,330 @@
             "IBM", "Accenture", "Wipro", "Salesforce", "Adobe", "Zoho", "Deloitte", "Flipkart", "HCL",
             "SAP", "Capgemini"
             ] %}
-            <option value="{{ company }}">{{ company }}</option>
+            <option value="{{ company }}" {% if request.args.get('company') == company %}selected{% endif %}>{{ company }}</option>
             {% endfor %}
         </select>
 
         <select name="type">
             <option value="">All Types</option>
             {% for type in ["Remote", "Hybrid", "In-office"] %}
-            <option value="{{ type }}">{{ type }}</option>
+            <option value="{{ type }}" {% if request.args.get('type') == type %}selected{% endif %}>{{ type }}</option>
             {% endfor %}
         </select>
 
-        <button type="submit">Filter</button>
+        <!-- 🔽 Sorting -->
+        <select name="sort">
+            <option value="">Sort By</option>
+            <option value="latest" {% if request.args.get('sort') == 'latest' %}selected{% endif %}>Latest</option>
+            <option value="duration" {% if request.args.get('sort') == 'duration' %}selected{% endif %}>Duration</option>
+            <option value="az" {% if request.args.get('sort') == 'az' %}selected{% endif %}>A–Z</option>
+        </select>
+
+        <button type="submit" class="filter-btn">✨ Filter</button>
     </form>
 
+    <!-- 🌟 INTERNSHIP GRID -->
     <div class="internship-grid">
         {% for internship in internships %}
         <div class="internship-card {% if internship.featured %}featured{% endif %}">
             <div class="card-top">
-                
                 <h3>{{ internship.title }}</h3>
                 <span class="type-badge">{{ internship.type }}</span>
+
                 {% if internship.featured %}
                 <span class="featured-badge">⭐ Featured</span>
+                {% elif internship.date_posted and (current_date - internship.date_posted).days <= 7 %}
+                <span class="new-badge">🆕 New</span>
                 {% endif %}
+
+                <button class="bookmark-btn" data-id="{{ internship._id }}" title="Save Internship">⭐</button>
             </div>
+
             <p><strong>Company:</strong> {{ internship.company }}</p>
             <p><strong>Domain:</strong> {{ internship.domain }}</p>
             <p><strong>Duration:</strong> {{ internship.duration }}</p>
+
             <div class="skills">
                 {% for skill in internship.skills %}
                 <span class="skill-tag">{{ skill }}</span>
                 {% endfor %}
             </div>
-            <a href="{{ internship.link }}" target="_blank" class="apply-button">Apply Now</a>
+
+            <button class="details-btn" 
+                    data-title="{{ internship.title }}"
+                    data-company="{{ internship.company }}"
+                    data-domain="{{ internship.domain }}"
+                    data-duration="{{ internship.duration }}"
+                    data-type="{{ internship.type }}"
+                    data-skills="{{ internship.skills | join(', ') }}"
+                    data-link="{{ internship.link }}">
+                View Details
+            </button>
         </div>
         {% endfor %}
+
         {% if not internships %}
         <p class="no-results">No internships found. Try different filters!</p>
         {% endif %}
     </div>
 </div>
-{% endblock %}
+
+<!-- 🪟 Internship Details Modal -->
+<div id="internshipModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3 id="modalTitle"></h3>
+        <p><strong>Company:</strong> <span id="modalCompany"></span></p>
+        <p><strong>Domain:</strong> <span id="modalDomain"></span></p>
+        <p><strong>Duration:</strong> <span id="modalDuration"></span></p>
+        <p><strong>Type:</strong> <span id="modalType"></span></p>
+        <p><strong>Skills:</strong> <span id="modalSkills"></span></p>
+        <a id="modalApplyLink" href="#" target="_blank" class="apply-button">Apply Now</a>
+    </div>
+</div>
+
+<!-- 💻 JS for Modal & Bookmark -->
+<script>
+    const modal = document.getElementById("internshipModal");
+    const closeBtn = modal.querySelector(".close");
+    const detailButtons = document.querySelectorAll(".details-btn");
+
+    detailButtons.forEach(btn => {
+        btn.onclick = () => {
+            document.getElementById("modalTitle").innerText = btn.dataset.title;
+            document.getElementById("modalCompany").innerText = btn.dataset.company;
+            document.getElementById("modalDomain").innerText = btn.dataset.domain;
+            document.getElementById("modalDuration").innerText = btn.dataset.duration;
+            document.getElementById("modalType").innerText = btn.dataset.type;
+            document.getElementById("modalSkills").innerText = btn.dataset.skills;
+            document.getElementById("modalApplyLink").href = btn.dataset.link;
+            modal.style.display = "flex";
+        };
+    });
+
+    closeBtn.onclick = () => modal.style.display = "none";
+    window.onclick = e => { if (e.target == modal) modal.style.display = "none"; };
+
+    const bookmarkBtns = document.querySelectorAll(".bookmark-btn");
+    bookmarkBtns.forEach(btn => {
+        btn.addEventListener("click", async () => {
+            const internshipId = btn.dataset.id;
+            const response = await fetch(`/save_internship/${internshipId}`, { method: "POST" });
+            if (response.ok) {
+                btn.classList.add("saved");
+                btn.innerText = "💚 Saved";
+            } else {
+                alert("Please log in to save internships.");
+            }
+        });
+    });
+</script>
+
+<!-- 💅 Gorgeous Modern CSS -->
+<style>
+    body {
+        background: linear-gradient(135deg, #e0e7ff, #f8fafc);
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .internships-heading {
+        text-align: center;
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1e3a8a;
+        margin-bottom: 1.5rem;
+    }
+
+    .internship-filters {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.8rem;
+        background: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(10px);
+        padding: 1rem;
+        border-radius: 1rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .internship-filters select,
+    .internship-filters input {
+        padding: 0.6rem 1rem;
+        border-radius: 0.5rem;
+        border: 1px solid #cbd5e1;
+        font-size: 0.95rem;
+        transition: 0.3s;
+    }
+
+    .internship-filters select:hover,
+    .internship-filters input:focus {
+        border-color: #2563eb;
+        outline: none;
+        box-shadow: 0 0 4px rgba(37, 99, 235, 0.3);
+    }
+
+    .filter-btn {
+        background: #2563eb;
+        color: white;
+        border: none;
+        border-radius: 0.5rem;
+        padding: 0.6rem 1.2rem;
+        font-weight: 600;
+        transition: 0.3s;
+        cursor: pointer;
+    }
+
+    .filter-btn:hover {
+        background: #1e40af;
+        transform: scale(1.05);
+    }
+
+    .internship-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+        gap: 1.5rem;
+        padding: 0 1rem;
+    }
+
+    .internship-card {
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 1rem;
+        padding: 1.3rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        transition: 0.3s;
+        position: relative;
+        border: 1px solid transparent;
+    }
+
+    .internship-card:hover {
+        transform: translateY(-6px);
+        border: 1px solid #2563eb;
+        box-shadow: 0 8px 18px rgba(37, 99, 235, 0.15);
+    }
+
+    .card-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .type-badge {
+        background: #2563eb;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    .featured-badge, .new-badge {
+        background: gold;
+        color: black;
+        padding: 3px 7px;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 0.8rem;
+        margin-left: 5px;
+    }
+
+    .skills {
+        margin-top: 0.6rem;
+    }
+
+    .skill-tag {
+        display: inline-block;
+        background: #eff6ff;
+        color: #1e3a8a;
+        border: 1px solid #bfdbfe;
+        border-radius: 6px;
+        padding: 4px 8px;
+        font-size: 0.8rem;
+        margin: 2px;
+    }
+
+    .details-btn {
+        background: #2563eb;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 0.6rem 1.2rem;
+        margin-top: 10px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: 0.3s;
+        width: 100%;
+    }
+
+    .details-btn:hover {
+        background: #1e40af;
+        transform: scale(1.03);
+    }
+
+    .bookmark-btn {
+        background: none;
+        border: none;
+        font-size: 1.3rem;
+        cursor: pointer;
+        position: absolute;
+        top: 12px;
+        right: 14px;
+        transition: 0.3s;
+    }
+
+    .bookmark-btn:hover { transform: scale(1.2); }
+    .bookmark-btn.saved { color: #16a34a; }
+
+    /* Modal Styles */
+    .modal {
+        display: none;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        z-index: 1000;
+        left: 0; top: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.5);
+    }
+
+    .modal-content {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 12px;
+        width: 90%;
+        max-width: 480px;
+        animation: fadeIn 0.4s ease;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    }
+
+    .close {
+        float: right;
+        font-size: 22px;
+        cursor: pointer;
+        color: #555;
+    }
+
+    .close:hover { color: #000; }
+
+    .apply-button {
+        display: inline-block;
+        background: #2563eb;
+        color: #fff;
+        text-decoration: none;
+        padding: 0.6rem 1rem;
+        border-radius: 8px;
+        margin-top: 1rem;
+        transition: 0.3s;
+    }
+
+    .apply-button:hover {
+        background: #1e40af;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.95); }
+        to { opacity: 1; transform: scale(1); }
+    }
+</style>
+{% endblock %}  
 

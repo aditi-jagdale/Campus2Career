@@ -68,6 +68,8 @@ def login():
             # Store user session
             session["user"] = {
                 "_id": str(user["_id"]),
+                "name": user.get("name"),
+                "email": user.get("email"),
                 "name": user.get("name", ""),
                 "email": user.get("email", ""),
                 "college": user.get("college", ""),
@@ -156,11 +158,14 @@ def update_profile():
         {"$set": update_data}
     )
 
+    # Refresh session with updated user
     # Refresh session with updated user info
     user = mongo.db.users.find_one({"_id": ObjectId(user_id)})
     user["_id"] = str(user["_id"])
     session["user"] = user
 
+    flash("Profile updated successfully!", "success")
+    return redirect(url_for("profile"))
     flash("Profile updated successfully! Redirecting to internships...", "success")
     
     # ✅ Redirect to internships page instead of profile
@@ -199,21 +204,6 @@ def resources():
 from insert import internships as all_internships
 
 
-'''@app.route('/internships')
-def internships():
-    domain = request.args.get('domain')
-    company = request.args.get('company')
-    type_ = request.args.get('type')
-
-    filtered = all_internships
-    if domain:
-        filtered = [i for i in filtered if i['domain'] == domain]
-    if company:
-        filtered = [i for i in filtered if i['company'] == company]
-    if type_:
-        filtered = [i for i in filtered if i['type'] == type_]
-
-    return render_template("internships.html", internships=filtered)'''
 @app.route('/internships')
 def internships():
     # ===== Check if user is logged in =====
@@ -230,12 +220,27 @@ def internships():
         flash("Please complete your profile before accessing internships.", "warning")
         return redirect(url_for("profile"))
 
-    # ===== Filter internships if query params provided =====
+    # ===== Get filters from query params =====
+    search = request.args.get('search', '').strip().lower()
     domain = request.args.get('domain')
     company = request.args.get('company')
     type_ = request.args.get('type')
+    sort = request.args.get('sort')
 
+    # ===== Start with all internships =====
     filtered = all_internships
+
+    # ===== 🔍 Search filter =====
+    if search:
+        filtered = [
+            i for i in filtered
+            if search in i['title'].lower()
+            or search in i['company'].lower()
+            or search in i.get('domain', '').lower()
+            or any(search in skill.lower() for skill in i.get('skills', []))
+        ]
+
+    # ===== 🎯 Filter by domain/company/type =====
     if domain:
         filtered = [i for i in filtered if i['domain'] == domain]
     if company:
@@ -243,7 +248,28 @@ def internships():
     if type_:
         filtered = [i for i in filtered if i['type'] == type_]
 
-    return render_template("internships.html", internships=filtered)
+    # ===== 🔽 Sorting =====
+    from datetime import datetime
+
+    if sort == "az":
+        filtered = sorted(filtered, key=lambda x: x['title'].lower())
+    elif sort == "duration":
+        filtered = sorted(filtered, key=lambda x: x.get('duration', ''))
+    elif sort == "latest":
+        filtered = sorted(
+            filtered,
+            key=lambda x: x.get('date_posted', datetime.min),
+            reverse=True
+        )
+
+    current_date = datetime.now()
+
+    # ===== Render Page =====
+    return render_template(
+        "internships.html",
+        internships=filtered,
+        current_date=current_date
+    )
 
 
 # ===== Run App =====
